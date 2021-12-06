@@ -21,6 +21,8 @@ public class LogResult {
   private Long countOfExistRow;
   @Column(name = "new_count_row", nullable = false)
   private Long newCountRow;
+  @Column(name = "round_number", nullable = false)
+  private int roundNumber;
   @Column(name = "test_case", nullable = false)
   private String testCase;
 
@@ -86,5 +88,13 @@ public class LogResult {
 
   public void setNewCountRow(Long newCountRow) {
     this.newCountRow = newCountRow;
+  }
+
+  public int getRoundNumber() {
+    return roundNumber;
+  }
+
+  public void setRoundNumber(int roundNumber) {
+    this.roundNumber = roundNumber;
   }
 }

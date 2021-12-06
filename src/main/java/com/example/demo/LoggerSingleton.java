@@ -59,6 +59,7 @@ public class LoggerSingleton {
   public synchronized void remove(String strategy, String testCase, long existRowCount) {
     var counter = threadCount.get(strategy);
     counter.remove(0);
+    log.info("{} thread {} Finished", strategy, counter.size());
     if (counter.isEmpty() && !LOGGED) {
       LOGGED = true;
       long duration = tak(strategy, testCase);
@@ -72,13 +73,14 @@ public class LoggerSingleton {
   private void saveLogResult(String strategy, String testCase, long duration, long existRowCount) {
     LogResultService service = ContextLoader.getService(LogResultService.class);
     LogResult logResult = new LogResult();
+    logResult.setCountOfExistRow(existRowCount);
+    logResult.setNewCountRow(existRowCount + ((long) Constant.ROWS * Constant.THREAD_COUNT));
     logResult.setNumberOfRow(Constant.ROWS);
     logResult.setNumberOfThread(Constant.THREAD_COUNT);
     logResult.setStrategy(strategy);
     logResult.setTestCase(testCase);
     logResult.setTimeMili(duration);
-    logResult.setCountOfExistRow(existRowCount);
-    logResult.setNewCountRow(existRowCount + ((long) Constant.ROWS * Constant.THREAD_COUNT));
+    logResult.setRoundNumber(DemoApplication.ROUND);
     service.saveResult(logResult);
     DemoApplication.isRunning = false;
   }
